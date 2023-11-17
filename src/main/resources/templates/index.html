@@ -15,14 +15,17 @@
 <body>
 <h1>Welcome</h1>
 <nav>
-    <a href="./add">Add an item</a>
+    <a href="/item/add">Add an item</a>
 </nav>
-<ul th:each="item : ${items}">
+<ul th:each="item : ${items}" hx-confirm="Are you sure?" hx-target="closest li" hx-swap="outerHTML">
     <li>
         <p><span th:text="${item.name}"></span> <a th:href="@{'/item/' + ${item.id}}">See item</a></p>
         <button th:attr="hx-delete='/item/remove/' + ${item.id}">Delete</button>
     </li>
 </ul>
-<p th:text="'We have currently ' + ${items.size()} + ' items'"></p>
+<!--TODO: We should not make it 10s-->
+<p>We have currently <span hx-get="/item/count" hx-swap="innerHTML" hx-trigger="load, every 10s"></span>
+    products
+</p>
 </body>
 </html>

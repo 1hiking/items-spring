@@ -22,6 +22,11 @@ public class ItemRestController {
         return itemService.listItems();
     }
 
+    @GetMapping("item/count")
+    public int getItemCount() {
+        return itemService.listItems().size();
+    }
+
     @DeleteMapping("item/remove/{id:\\d+}")
     public void deleteItem(@PathVariable long id) {
         var item = itemService.findItemById(id);

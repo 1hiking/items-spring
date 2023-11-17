@@ -17,7 +17,7 @@ public class ItemController {
         this.itemService = itemService;
     }
 
-    @GetMapping("index")
+    @GetMapping("/")
     public String index(@Nonnull Model model) {
         model.addAttribute("items", itemService.listItems());
         return "index";

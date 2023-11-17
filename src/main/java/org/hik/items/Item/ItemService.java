@@ -27,10 +27,9 @@ public class ItemService {
         return item.orElseThrow();
     }
 
-    // @TODO Should it return something? How to represent it to the user.
-    public String deleteItem(long id) {
+    public void deleteItem(long id) {
         itemRepository.deleteById(id);
-        return "Success";
+
     }
 
     public List<Item> listItems() {
