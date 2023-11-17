@@ -6,17 +6,21 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Items</title>
+    <script src="https://unpkg.com/htmx.org@1.9.8"
+            integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr"
+            crossorigin="anonymous"></script>
+
+
 </head>
 <body>
 <h1>Welcome</h1>
 <nav>
     <a href="./add">Add an item</a>
-    <a href="./remove">Delete an item</a>
 </nav>
 <ul th:each="item : ${items}">
     <li>
         <p><span th:text="${item.name}"></span> <a th:href="@{'/item/' + ${item.id}}">See item</a></p>
-        <!--<button hx-delete='/item/remove/' + ${item.id}>Delete</button> -->
+        <button th:attr="hx-delete='/item/remove/' + ${item.id}">Delete</button>
     </li>
 </ul>
 <p th:text="'We have currently ' + ${items.size()} + ' items'"></p>

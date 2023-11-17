@@ -15,7 +15,7 @@ public class GlobalControllerExceptionHandler {
 
     @ResponseStatus(value = HttpStatus.NOT_FOUND)
     @ExceptionHandler(value = NoSuchElementException.class)
-    public String ItemNotFoundException(@Nonnull NoSuchElementException e, @Nonnull Model model) {
+    protected String ItemNotFoundException(@Nonnull NoSuchElementException e, @Nonnull Model model) {
         model.addAttribute("message", e.getMessage());
         return "error";
     }

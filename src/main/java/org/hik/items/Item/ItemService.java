@@ -22,15 +22,13 @@ public class ItemService {
         }
     }
 
-    public Optional<Item> findItemById(long id) {
-        return itemRepository.findById(id);
+    public Item findItemById(long id) {
+        Optional<Item> item = itemRepository.findById(id);
+        return item.orElseThrow();
     }
 
     // @TODO Should it return something? How to represent it to the user.
     public String deleteItem(long id) {
-        if (findItemById(id).isEmpty()) {
-            return "Entity not found";
-        }
         itemRepository.deleteById(id);
         return "Success";
     }
@@ -40,13 +38,14 @@ public class ItemService {
     }
 
     @Transactional
-    public void modifyItem(Item item) {
-        findItemById(item.getId()).ifPresent(item1 -> {
-            item1.setName(item.getName());
-            item1.setDescription(item.getDescription());
-            item1.setQuantity(item1.getQuantity());
-            itemRepository.save(item1);
-        });
+    public void modifyItem(Item itemToModify) {
+
+        var item = findItemById(itemToModify.getId());
+
+        item.setName(itemToModify.getName());
+        item.setDescription(itemToModify.getDescription());
+        item.setQuantity(itemToModify.getQuantity());
+
     }
 
 }
