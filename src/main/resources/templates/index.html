@@ -9,18 +9,32 @@
     <script src="https://unpkg.com/htmx.org@1.9.8"
             integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr"
             crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://unpkg.com/bonsai.css@latest/dist/bonsai.min.css" rel="stylesheet">
 
 
 </head>
 <body>
-<h1>Welcome</h1>
+<h1>Welcome to the Inventory</h1>
 <nav>
     <a href="/item/add">Add an item</a>
 </nav>
-<ul th:each="item : ${items}" hx-confirm="Are you sure?" hx-target="closest li" hx-swap="outerHTML">
-    <li>
-        <p><span th:text="${item.name}"></span> <a th:href="@{'/item/' + ${item.id}}">See item</a></p>
-        <button th:attr="hx-delete='/item/remove/' + ${item.id}">Delete</button>
+<ul>
+    <li th:each="item : ${items}">
+        <p><span th:text="${item.name}"></span></p>
+        <a th:href="@{'/item/update/' + ${item.id}}">Update item</a>
+        <div>
+            <button th:attr="hx-delete='/item/remove/' + ${item.id}" hx-confirm="Are you sure?" hx-target="closest li"
+                    hx-swap="outerHTML">Delete it
+        </div>
+        </button>
+        <div x-data="{open: false}">
+            <button th:attr="hx-get='item/details/' + ${item.id}" hx-target="next .response" hx-swap="innerHTML"
+                    @click="open = ! open">See
+                details
+            </button>
+            <div class="response" x-show="open"></div>
+        </div>
     </li>
 </ul>
 <!--TODO: We should not make it 10s-->

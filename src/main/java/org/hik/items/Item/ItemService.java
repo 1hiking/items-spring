@@ -16,10 +16,11 @@ public class ItemService {
     }
 
 
-    public void addItem(Item item) {
+    public Item addItem(Item item) {
         if (item != null) {
             itemRepository.save(item);
         }
+        return item;
     }
 
     public Item findItemById(long id) {

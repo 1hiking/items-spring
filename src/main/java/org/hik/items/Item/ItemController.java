@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 @RequestMapping(value = "/")
 public class ItemController {
 
-    private ItemService itemService;
+    private final ItemService itemService;
 
     @Autowired
     public ItemController(ItemService itemService) {
@@ -23,28 +23,30 @@ public class ItemController {
         return "index";
     }
 
+    @GetMapping("item/count")
+    @ResponseBody
+    public int getItemCount() {
+        return itemService.listItems().size();
+    }
+
 
     @GetMapping("item/add")
     public String addItemForm(@Nonnull Model model) {
         model.addAttribute("item", new Item());
 
-        return "add";
+        return "itemForm";
     }
 
-    @PostMapping("item/add")
-    public String addItemSubmit(@ModelAttribute Item item, @Nonnull Model model) {
-        model.addAttribute("item", item);
-        itemService.addItem(item);
-
-        return "result";
-    }
-
-    @GetMapping("item/{id:\\d+}")
-    public String getItemIndex(@PathVariable(value = "id") long id, @Nonnull Model model) {
+    @GetMapping("item/details/{id:\\d+}")
+    @ResponseBody
+    public String getItemIndex(@PathVariable(value = "id") long id) {
         var item = itemService.findItemById(id);
-        model.addAttribute("item", item);
+        var name = item.getName();
+        var description = item.getDescription();
+        var quantity = item.getQuantity();
+        String response = String.format("<p>Name: %s</p> \n <p>Description: %s \n <p>Quantity: %d</p>", name, description, quantity);
 
-        return "item";
+        return response;
     }
 
 
@@ -53,7 +55,36 @@ public class ItemController {
         var item = itemService.findItemById(id);
         model.addAttribute("item", item);
 
-        return "add";
+        return "itemUpdateForm";
+    }
+
+    @PostMapping("item/add")
+    @ResponseBody
+    public String addItemSubmit(@ModelAttribute Item item) {
+        Item returnedItem = itemService.addItem(item);
+
+        var name = returnedItem.getName();
+        var description = returnedItem.getDescription();
+        var quantity = returnedItem.getQuantity();
+        String response = String.format("<p>Name: %s</p> \n <p>Description: %s \n <p>Quantity: %d</p>", name, description, quantity);
+
+        return response;
+    }
+
+    @DeleteMapping("item/remove/{id:\\d+}")
+    public void deleteItem(@PathVariable long id) {
+        var item = itemService.findItemById(id);
+        itemService.deleteItem(item.getId());
+
+    }
+
+    // @TODO untested
+    @PutMapping("item/update/{id:\\d+}")
+    public void updateItem(@RequestBody Item item, @PathVariable long id) {
+        var itemToUpdate = itemService.findItemById(id);
+        if (itemToUpdate != null) {
+            itemService.modifyItem(item);
+        }
     }
 
 }

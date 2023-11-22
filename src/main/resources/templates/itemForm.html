@@ -6,10 +6,16 @@
           content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>Add item</title>
+    <script src="https://unpkg.com/htmx.org@1.9.8"
+            integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr"
+            crossorigin="anonymous"></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    <link href="https://unpkg.com/bonsai.css@latest/dist/bonsai.min.css" rel="stylesheet">
+
 </head>
 <body>
 <h1>Add an Item</h1>
-<form action="#" th:action="@{/item/add}" th:object="${item}" method="post">
+<form action="#" hx-post="/item/add" th:object="${item}" hx-target="#answer" hx-swap="innerHTML">
     <fieldset>
         <legend>Item data</legend>
         <label>
@@ -24,14 +30,14 @@
             Quantity of the item:
             <input type="number" th:field="*{quantity}">
         </label>
-        <label>
-            Submit
-            <input type="submit" value="Submit">
-        </label>
-        <label>
-            <input type="reset" value="Reset">
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
         </label>
     </fieldset>
 </form>
+<div><a href="/">Go back to Index</a></div>
+<div id="answer">
+
+</div>
 </body>
 </html>
