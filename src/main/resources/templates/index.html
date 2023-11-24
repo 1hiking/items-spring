@@ -11,6 +11,7 @@
             crossorigin="anonymous"></script>
     <script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
     <link href="https://unpkg.com/bonsai.css@latest/dist/bonsai.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
 
 
 </head>
@@ -19,15 +20,14 @@
 <nav>
     <a href="/item/add">Add an item</a>
 </nav>
-<ul>
+<ul class="grid-list">
     <li th:each="item : ${items}">
-        <p><span th:text="${item.name}"></span></p>
+        <p class="text-list"><span th:text="${item.name}"></span></p>
         <a th:href="@{'/item/update/' + ${item.id}}">Update item</a>
         <div>
             <button th:attr="hx-delete='/item/remove/' + ${item.id}" hx-confirm="Are you sure?" hx-target="closest li"
-                    hx-swap="outerHTML">Delete it
+                    hx-swap="outerHTML">Delete it </button>
         </div>
-        </button>
         <div x-data="{open: false}">
             <button th:attr="hx-get='item/details/' + ${item.id}" hx-target="next .response" hx-swap="innerHTML"
                     @click="open = ! open">See

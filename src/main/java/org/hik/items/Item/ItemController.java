@@ -58,24 +58,20 @@ public class ItemController {
         return "itemUpdateForm";
     }
 
-    @PostMapping("item/add")
-    @ResponseBody
+    @PostMapping(value = "item/add")
     public String addItemSubmit(@ModelAttribute Item item) {
         Item returnedItem = itemService.addItem(item);
 
-        var name = returnedItem.getName();
-        var description = returnedItem.getDescription();
-        var quantity = returnedItem.getQuantity();
-        String response = String.format("<p>Name: %s</p> \n <p>Description: %s \n <p>Quantity: %d</p>", name, description, quantity);
-
-        return response;
+        return "redirect:/";
     }
 
     @DeleteMapping("item/remove/{id:\\d+}")
-    public void deleteItem(@PathVariable long id) {
+    @ResponseBody
+    public String  deleteItem(@PathVariable long id) {
         var item = itemService.findItemById(id);
         itemService.deleteItem(item.getId());
 
+        return "";
     }
 
     // @TODO untested

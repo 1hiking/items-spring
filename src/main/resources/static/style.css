@@ -1,0 +1,28 @@
+h1 {
+    text-align: center;
+}
+
+.grid-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1rem;
+    text-align: center;
+    overflow: hidden;
+}
+
+.text-list > span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+}
+
+ul {
+    list-style-type: none;
+
+}
+
+p {
+font-size: 1.175rem;
+}
