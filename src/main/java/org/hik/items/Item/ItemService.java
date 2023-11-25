@@ -38,13 +38,13 @@ public class ItemService {
     }
 
     @Transactional
-    public void modifyItem(Item itemToModify) {
+    public void modifyItem(long id, String name, String description, int quantity) {
 
-        var item = findItemById(itemToModify.getId());
+        var item = findItemById(id);
 
-        item.setName(itemToModify.getName());
-        item.setDescription(itemToModify.getDescription());
-        item.setQuantity(itemToModify.getQuantity());
+        item.setName(name);
+        item.setDescription(description);
+        item.setQuantity(quantity);
 
     }
 
