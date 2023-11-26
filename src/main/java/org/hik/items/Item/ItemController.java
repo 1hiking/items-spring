@@ -40,7 +40,7 @@ public class ItemController {
 
     @PostMapping("item/add")
     public String addItemSubmit(@ModelAttribute Item item) {
-        Item returnedItem = itemService.addItem(item);
+        itemService.addItem(item);
 
         return "redirect:/";
     }
