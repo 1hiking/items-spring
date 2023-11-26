@@ -2,21 +2,21 @@
 <html lang="en" xmlns:th="https://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <meta content="ie=edge" http-equiv="X-UA-Compatible">
     <title>Add item</title>
     <link href="https://unpkg.com/bonsai.css@latest/dist/bonsai.min.css" rel="stylesheet">
 
 </head>
 <body>
 <h1>Add an Item</h1>
-<form action="#" th:action="@{/item/add}" th:object="${item}" method="post">
+<form action="#" method="post" th:action="@{/item/add}" th:object="${item}">
     <fieldset>
         <legend>Item data</legend>
         <label>
             Name of the item:
-            <input type="text" th:field="*{name}">
+            <input th:field="*{name}" type="text">
         </label>
         <label>
             Description of the item:
@@ -24,7 +24,7 @@
         </label>
         <label>
             Quantity of the item:
-            <input type="number" th:field="*{quantity}">
+            <input th:field="*{quantity}" type="number">
         </label>
         <button type="submit">Submit</button>
         <button type="reset">Reset</button>
