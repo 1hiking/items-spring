@@ -24,10 +24,10 @@ public class ItemService {
             namePolicy = new HtmlPolicyBuilder().toFactory();
             descriptionPolicy = new HtmlPolicyBuilder().allowElements("br").toFactory();
 
-            item.getDescription().replace("\n", "<br>");
+            var replacedNewLines = item.getDescription().replace(System.lineSeparator(), "<br>");
 
             var safeName = namePolicy.sanitize(item.getName());
-            var safeDescription = descriptionPolicy.sanitize(item.getDescription());
+            var safeDescription = descriptionPolicy.sanitize(replacedNewLines);
             item.setDescription(safeDescription);
             item.setName(safeName);
             itemRepository.save(item);
@@ -56,9 +56,9 @@ public class ItemService {
 
         var item = findItemById(id);
 
-        item.getDescription().replace("\n", "<br>");
-        var safeName = namePolicy.sanitize(item.getName());
-        var safeDescription = descriptionPolicy.sanitize(item.getDescription());
+        var descriptionWithNewlines = description.replace("\n", "<br>");
+        var safeName = namePolicy.sanitize(name);
+        var safeDescription = descriptionPolicy.sanitize(descriptionWithNewlines);
 
         item.setDescription(safeDescription);
         item.setName(safeName);

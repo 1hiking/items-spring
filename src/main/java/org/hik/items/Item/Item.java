@@ -19,16 +19,27 @@ public class Item {
     @Column(name = "description", nullable = false)
     @NotNull
     private String description;
+
     @Column(name = "quantity", nullable = false)
     @NotNull
     private int quantity;
+
+    public Item() {
+    }
+
+    public Item(String name, String description, int quantity) {
+        this.name = name;
+        this.description = description;
+        this.quantity = quantity;
+    }
 
     public int getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(int quantity) {
+    public Item setQuantity(int quantity) {
         this.quantity = quantity;
+        return this;
     }
 
     public Long getId() {
@@ -39,17 +50,22 @@ public class Item {
         return name;
     }
 
-    public void setName(String name) {
+    public Item setName(String name) {
         this.name = name;
+        return this;
     }
 
     public String getDescription() {
         return description;
     }
 
-    public void setDescription(String description) {
+    public Item setDescription(String description) {
         this.description = description;
+        return this;
     }
 
 
+    public Item createItem() {
+        return new Item(name, description, quantity);
+    }
 }

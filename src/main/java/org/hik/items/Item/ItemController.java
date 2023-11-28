@@ -25,7 +25,7 @@ public class ItemController {
 
     @GetMapping("item/add")
     public String addItemForm(@Nonnull Model model) {
-        model.addAttribute("item", new Item());
+        model.addAttribute("item", new Item().createItem());
 
         return "itemForm";
     }
