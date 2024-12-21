@@ -1,0 +1,49 @@
+<!-- src/main/resources/templates/home.html -->
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity5">
+
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <title>Items</title>
+    <link th:href="@{/style.css}" rel="stylesheet">
+</head>
+
+<body>
+<div sec:authorize="!isAuthenticated()">
+    <a th:href="@{/oauth2/authorization/okta}">Log In</a>
+</div>
+<div sec:authorize="isAuthenticated()">
+    <header>
+        <img th:src="${profile.get('picture')}" th:attr="alt=${profile.get('name')}" alt=""/>
+        <h2 th:text="${profile.get('name')}"></h2>
+        <form name="logoutForm" th:action="@{/logout}" method="post">
+            <button type="submit" value="Log out">Log out</button>
+        </form>
+    </header>
+
+    <main>
+        <h1>Welcome to the Inventory</h1>
+        <nav>
+            <a href="/item/add">Add an item</a>
+        </nav>
+        <ul class="grid-list">
+            <li th:each="item : ${items}">
+
+                <a th:text="${item.name}" th:href="@{'/item/details/' + ${item.id}}"></a>
+
+                <a th:href="@{'/item/update/' + ${item.id}}">Update item</a>
+
+                <a th:href="@{'/item/delete/' + ${item.id}}">Delete item</a>
+
+            </li>
+        </ul>
+        <!--TODO: We should not make it 10s-->
+        <p>We have currently <span hx-get="/api/item/count" hx-swap="innerHTML" hx-trigger="load"></span>
+            products
+        </p>
+    </main>
+</div>
+</body>
+</html>

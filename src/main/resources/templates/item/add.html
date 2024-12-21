@@ -5,35 +5,36 @@
     <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
           name="viewport">
     <meta content="ie=edge" http-equiv="X-UA-Compatible">
-    <title>Update item</title>
-    <script crossorigin="anonymous"
-            integrity="sha384-rgjA7mptc2ETQqXoYC3/zJvkU7K/aP44Y+z7xQuJiVnB/422P/Ak+F/AqFR7E4Wr"
-            src="https://unpkg.com/htmx.org@1.9.8"></script>
-    <link href="https://unpkg.com/bonsai.css@latest/dist/bonsai.min.css" rel="stylesheet">
+    <title>Add item</title>
+    <link th:href="@{/style.css}" rel="stylesheet">
+
+</head>
 <body>
 <h1>Add an Item</h1>
-<form th:attr="hx-put='/item/update/' + ${item.id}" th:object="${item}">
+<form action="#" method="post" th:action="@{/item/add}" th:object="${item}">
     <fieldset>
         <legend>Item data</legend>
         <label>
             Name of the item:
             <input th:field="*{name}" type="text">
         </label>
+        <p th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}"></p>
         <label>
             Description of the item:
             <textarea th:field="*{description}"></textarea>
         </label>
+        <p th:if="${#fields.hasErrors('description')}" th:errorclass="error" th:errors="*{description}"></p>
         <label>
             Quantity of the item:
             <input th:field="*{quantity}" type="number">
         </label>
-        <label>
-            <input type="submit" value="Submit">
-        </label>
-        <label>
-            <input type="reset" value="Reset">
-        </label>
+        <p th:if="${#fields.hasErrors('quantity')}" th:errorclass="error" th:errors="*{quantity}"></p>
+        <button type="submit">Submit</button>
+        <button type="reset">Reset</button>
     </fieldset>
 </form>
+<div><a href="/">Go back to Index</a></div>
+
+
 </body>
 </html>

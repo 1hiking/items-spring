@@ -1,9 +1,9 @@
 package org.hik.items.Item;
 
-import jakarta.transaction.Transactional;
 import org.owasp.html.HtmlPolicyBuilder;
 import org.owasp.html.PolicyFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
@@ -19,6 +19,7 @@ public class ItemService {
         this.itemRepository = itemRepository;
     }
 
+    @Transactional
     public Item addItem(Item item) {
         if (item != null) {
             namePolicy = new HtmlPolicyBuilder().toFactory();
@@ -35,6 +36,7 @@ public class ItemService {
         return item;
     }
 
+    @Transactional(readOnly = true)
     public Item findItemById(long id) {
         Optional<Item> item = itemRepository.findById(id);
         return item.orElseThrow();
@@ -42,8 +44,8 @@ public class ItemService {
 
     public void deleteItem(long id) {
         itemRepository.deleteById(id);
-
     }
+
 
     public List<Item> listItems() {
         return itemRepository.findAll();

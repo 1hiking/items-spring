@@ -2,6 +2,18 @@ h1, nav {
     text-align: center;
 }
 
+body {
+    font-family: sans-serif;
+}
+
+header {
+    display: flex;
+    flex-direction: row;
+    img {
+        width: 70px;
+        height: auto;
+    }
+}
 
 
 .grid-list {
@@ -26,5 +38,5 @@ ul {
 }
 
 p {
-font-size: 1.175rem;
+    font-size: 1.175rem;
 }

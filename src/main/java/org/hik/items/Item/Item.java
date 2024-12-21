@@ -1,6 +1,8 @@
 package org.hik.items.Item;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 
 @Entity
@@ -14,14 +16,17 @@ public class Item {
 
     @Column(name = "name", nullable = false)
     @NotNull
+    @NotEmpty(message = "Item name is required.")
     private String name;
 
     @Column(name = "description", nullable = false)
     @NotNull
+    @NotEmpty(message = "Item description is required.")
     private String description;
 
     @Column(name = "quantity", nullable = false)
     @NotNull
+    @Min(value = 0, message = "There can only be a positive amount of items.")
     private int quantity;
 
     public Item() {

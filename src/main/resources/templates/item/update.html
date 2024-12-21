@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <title>Update item</title>
+    <link th:href="@{/style.css}" rel="stylesheet">
+</head>
+<body>
+<h1 th:text="'Update Item ' + ${item.name}"></h1>
+<p th:if="${errorMessage}" th:text="${errorMessage}"></p>
+<form method="post" th:action="@{/item/update/{id}(id=${item.id})}" th:object="${item}">
+    <fieldset>
+        <legend>Item data</legend>
+        <label>
+            Name of the item:
+            <input th:field="*{name}" type="text">
+        </label>
+        <p th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}"></p>
+        <label>
+            Description of the item:
+            <textarea th:field="*{description}"></textarea>
+        </label>
+        <p th:if="${#fields.hasErrors('description')}" th:errorclass="error" th:errors="*{description}"></p>
+        <label>
+            Quantity of the item:
+            <input th:field="*{quantity}" type="number">
+        </label>
+        <p th:if="${#fields.hasErrors('quantity')}" th:errorclass="error" th:errors="*{quantity}"></p>
+        <label>
+            <input type="submit" value="Submit">
+        </label>
+        <label>
+            <input type="reset" value="Reset">
+        </label>
+    </fieldset>
+</form>
+<div><a href="/item/">Go back to Index</a></div>
+
+</body>
+</html>

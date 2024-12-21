@@ -1,0 +1,22 @@
+<!doctype html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0"
+          name="viewport">
+    <title>Delete item</title>
+    <link th:href="@{/style.css}" rel="stylesheet">
+</head>
+<body>
+<h1 th:text="'Delete Item ' + ${item.name}"></h1>
+<p th:if="${errorMessage}" th:text="${errorMessage}"></p>
+<p>Are you sure you want to delete this item?</p>
+<form method="post" th:action="@{/item/delete/{id}(id=${item.id})}" th:object="${item}">
+    <label>
+        <input type="submit" value="Submit">
+    </label>
+</form>
+<div><a href="/static">Go back to Index</a></div>
+
+</body>
+</html>
