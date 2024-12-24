@@ -1,7 +1,10 @@
 package org.hik.items.Item;
 
 import jakarta.validation.Valid;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
@@ -16,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 @RequestMapping("/item/")
 public class ItemController {
 
+    private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
     private final ItemService itemService;
 
 
@@ -26,52 +30,52 @@ public class ItemController {
 
     @GetMapping("/")
     public String getIndex(Model model, @AuthenticationPrincipal OidcUser principal) {
-        model.addAttribute("profile",principal.getClaims());
-        model.addAttribute("items", itemService.listItems());
+        model.addAttribute("profile", principal.getClaims());
+        model.addAttribute("items", itemService.listItems(principal.getName()));
         return "item/index";
     }
 
-    @GetMapping("count")
-    public int getItemCount(Model model) {
-        return itemService.listItems().size();
-    }
-
-
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("add")
     public String getItemCreationForm(Model model) {
-        model.addAttribute("item", new Item().createItem());
+        var newItem = new Item().createItem();
+        model.addAttribute("item", newItem);
         return "item/add";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("add")
-    public String processItemCreationForm(@Valid Item item, BindingResult result) {
+    public String processItemCreationForm(@Valid Item item, BindingResult result, @AuthenticationPrincipal OidcUser principal) {
         if (result.hasErrors()) {
-            return "itemForm";
+            return "item/add";
         }
-
+        item.setUserId(principal.getName());
         itemService.addItem(item);
         return "redirect:/item/";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("details/{id:\\d+}")
-    public String getDetailsOfItem(@PathVariable Long id, Model model) {
-        var item = itemService.findItemById(id);
+    public String getDetailsOfItem(@PathVariable Long id, Model model, @AuthenticationPrincipal OidcUser principal) {
+        var item = itemService.findItemByIdAndUserId(id, principal.getName());
         model.addAttribute("item", item);
 
         return "item/details";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("update/{id:\\d+}")
-    public String getItemUpdateForm(@PathVariable Long id, Model model) {
-        var item = itemService.findItemById(id);
+    public String getItemUpdateForm(@PathVariable Long id, Model model, @AuthenticationPrincipal OidcUser principal) {
+        var item = itemService.findItemByIdAndUserId(id, principal.getName());
         model.addAttribute("item", item);
 
         return "item/update";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("update/{id:\\d+}")
-    public String processItemUpdateForm(@PathVariable Long id, @Valid Item item, BindingResult result, Model model) {
-        var itemToUpdate = itemService.findItemById(id);
+    public String processItemUpdateForm(@PathVariable Long id, @Valid Item item, BindingResult result, Model model, @AuthenticationPrincipal OidcUser principal) {
+        var itemToUpdate = itemService.findItemByIdAndUserId(id, principal.getName());
         if (itemToUpdate == null) {
             model.addAttribute("errorMessage", "Error fetching data.");
             return "item/update";
@@ -82,22 +86,24 @@ public class ItemController {
             return "item/update";
         }
 
-        itemService.modifyItem(id, item.getName(), item.getDescription(), item.getQuantity());
-        return "redirect:item/index";
+        itemService.modifyItem(id, item.getName(), item.getDescription(), item.getQuantity(), principal.getName());
+        return "redirect:/item/";
 
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("delete/{id:\\d+}")
-    public String getItemDeleteForm(@PathVariable Long id, Model model) {
-        var item = itemService.findItemById(id);
+    public String getItemDeleteForm(@PathVariable Long id, Model model, @AuthenticationPrincipal OidcUser principal) {
+        var item = itemService.findItemByIdAndUserId(id, principal.getName());
         model.addAttribute("item", item);
 
         return "item/delete";
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PostMapping("delete/{id:\\d+}")
-    public String processItemDeleteForm(@PathVariable Long id, Model model) {
-        var item = itemService.findItemById(id);
+    public String processItemDeleteForm(@PathVariable Long id, Model model, @AuthenticationPrincipal OidcUser principal) {
+        var item = itemService.findItemByIdAndUserId(id, principal.getName());
         if (item == null) {
             model.addAttribute("errorMessage", "Error deleting item.");
             return "item/delete";

@@ -41,8 +41,8 @@ public class ItemService {
     }
 
     @Transactional(readOnly = true)
-    public Item findItemById(long id) {
-        Optional<Item> item = itemRepository.findById(id);
+    public Item findItemByIdAndUserId(long id, String userId) {
+        Optional<Item> item = itemRepository.findByIdAndUserId(id, userId);
         logger.info("Item found: {}", item);
         return item.orElseThrow();
     }
@@ -52,18 +52,17 @@ public class ItemService {
         logger.info("Item deleted: {}", id);
     }
 
-
-    public List<Item> listItems() {
-        logger.info("List of items: {}", itemRepository.findAll().stream().toList());
-        return itemRepository.findAll();
+    public List<Item> listItems(String userId) {
+        logger.info("List of items: {}", itemRepository.findByUserId(userId));
+        return itemRepository.findByUserId(userId);
     }
 
     @Transactional
-    public void modifyItem(long id, String name, String description, int quantity) {
+    public void modifyItem(long id, String name, String description, int quantity, String userId) {
         namePolicy = new HtmlPolicyBuilder().toFactory();
         descriptionPolicy = new HtmlPolicyBuilder().allowElements("br").toFactory();
 
-        var item = findItemById(id);
+        var item = findItemByIdAndUserId(id, userId);
         logger.info("Item to modify: {}", item);
         var descriptionWithNewlines = description.replace("\n", "<br>");
         var safeName = namePolicy.sanitize(name);

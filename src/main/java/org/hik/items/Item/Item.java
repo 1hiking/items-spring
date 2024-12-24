@@ -29,13 +29,17 @@ public class Item {
     @Min(value = 0, message = "There can only be a positive amount of items.")
     private int quantity;
 
+    @Column(nullable = false)
+    private String userId;
+
     public Item() {
     }
 
-    public Item(String name, String description, int quantity) {
+    public Item(String name, String description, int quantity, String userId) {
         this.name = name;
         this.description = description;
         this.quantity = quantity;
+        this.userId = userId;
     }
 
     public int getQuantity() {
@@ -71,6 +75,25 @@ public class Item {
 
 
     public Item createItem() {
-        return new Item(name, description, quantity);
+        return new Item(name, description, quantity, userId);
+    }
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    @Override
+    public String toString() {
+        return "Item{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", description='" + description + '\'' +
+                ", quantity=" + quantity +
+                ", userId='" + userId + '\'' +
+                '}';
     }
 }
