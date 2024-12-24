@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/postgres
+    username: postgres
+    password: ${DB_PASSWORD}
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    properties:
+      hibernate:
+        format_sql: true
+  lifecycle:
+    timeout-per-shutdown-phase: 2m
+
+
+# Auth0 OAuth2 Configuration
+okta:
+  oauth2:
+    issuer: ${OKTA_OAUTH2_ISSUER}
+    client-id: ${OKTA_OAUTH2_CLIENT_ID}
+    client-secret: ${OKTA_OAUTH2_CLIENT_SECRET}
+
+# Server Port Configuration
+server:
+  port: 3000
+  shutdown: graceful
+
+logging:
+  level:
+    root: INFO
+    com.example: DEBUG
+  pattern:
+    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
