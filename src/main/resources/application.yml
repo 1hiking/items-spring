@@ -1,4 +1,10 @@
 spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+      enabled:
+        true
   datasource:
     url: jdbc:postgresql://localhost:5432/postgres
     username: postgres
@@ -25,11 +31,20 @@ okta:
 server:
   port: 3000
   shutdown: graceful
+  error:
+    whitelabel:
+      enabled:
+        false
 
 logging:
   level:
+    web: DEBUG
     root: INFO
-    com.example: DEBUG
   pattern:
     console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
     file: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
+
+
+upload:
+  dir:
+    "/images/"

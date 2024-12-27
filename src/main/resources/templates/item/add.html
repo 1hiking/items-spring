@@ -11,24 +11,29 @@
 </head>
 <body>
 <h1>Add an Item</h1>
-<form action="#" method="post" th:action="@{/item/add}" th:object="${item}">
+<form action="#" method="post" th:action="@{/item/add}" th:object="${item}" enctype="multipart/form-data">
     <fieldset>
         <legend>Item data</legend>
+
         <label>
-            Name of the item:
+            Item name:
             <input th:field="*{name}" type="text">
         </label>
         <p th:if="${#fields.hasErrors('name')}" th:errorclass="error" th:errors="*{name}"></p>
+
         <label>
-            Description of the item:
+            Item Description:
             <textarea th:field="*{description}"></textarea>
         </label>
         <p th:if="${#fields.hasErrors('description')}" th:errorclass="error" th:errors="*{description}"></p>
+
         <label>
-            Quantity of the item:
+            Item Quantity:
             <input th:field="*{quantity}" type="number">
         </label>
         <p th:if="${#fields.hasErrors('quantity')}" th:errorclass="error" th:errors="*{quantity}"></p>
+
+
         <button type="submit">Submit</button>
         <button type="reset">Reset</button>
     </fieldset>

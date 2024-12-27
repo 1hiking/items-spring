@@ -4,7 +4,13 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@Getter
+@NoArgsConstructor
+@ToString
 @Entity
 @Table(name = "item")
 public class Item {
@@ -29,11 +35,9 @@ public class Item {
     @Min(value = 0, message = "There can only be a positive amount of items.")
     private int quantity;
 
-    @Column(nullable = false)
+    @Column(name = "userId", nullable = false)
     private String userId;
 
-    public Item() {
-    }
 
     public Item(String name, String description, int quantity, String userId) {
         this.name = name;
@@ -42,21 +46,9 @@ public class Item {
         this.userId = userId;
     }
 
-    public int getQuantity() {
-        return quantity;
-    }
-
     public Item setQuantity(int quantity) {
         this.quantity = quantity;
         return this;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public Item setName(String name) {
@@ -64,36 +56,15 @@ public class Item {
         return this;
     }
 
-    public String getDescription() {
-        return description;
-    }
-
     public Item setDescription(String description) {
         this.description = description;
         return this;
     }
 
-
-    public Item createItem() {
-        return new Item(name, description, quantity, userId);
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
+    public Item setUserId(String userId) {
         this.userId = userId;
+        return this;
     }
 
-    @Override
-    public String toString() {
-        return "Item{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", description='" + description + '\'' +
-                ", quantity=" + quantity +
-                ", userId='" + userId + '\'' +
-                '}';
-    }
+
 }

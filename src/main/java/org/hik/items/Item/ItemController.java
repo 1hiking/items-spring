@@ -1,8 +1,7 @@
 package org.hik.items.Item;
 
 import jakarta.validation.Valid;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -10,16 +9,18 @@ import org.springframework.security.oauth2.core.oidc.user.OidcUser;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+
+@Slf4j
 @Controller
 @RequestMapping("/item/")
 public class ItemController {
 
-    private static final Logger logger = LoggerFactory.getLogger(ItemController.class);
     private final ItemService itemService;
 
 
@@ -38,7 +39,7 @@ public class ItemController {
     @PreAuthorize("isAuthenticated()")
     @GetMapping("add")
     public String getItemCreationForm(Model model) {
-        var newItem = new Item().createItem();
+        var newItem = new Item();
         model.addAttribute("item", newItem);
         return "item/add";
     }
@@ -47,6 +48,9 @@ public class ItemController {
     @PostMapping("add")
     public String processItemCreationForm(@Valid Item item, BindingResult result, @AuthenticationPrincipal OidcUser principal) {
         if (result.hasErrors()) {
+            for (FieldError fieldError : result.getFieldErrors()) {
+                log.error("Field error: {} - {}", fieldError.getField(), fieldError.getDefaultMessage());
+            }
             return "item/add";
         }
         item.setUserId(principal.getName());
@@ -86,7 +90,7 @@ public class ItemController {
             return "item/update";
         }
 
-        itemService.modifyItem(id, item.getName(), item.getDescription(), item.getQuantity(), principal.getName());
+        itemService.modifyItem(item);
         return "redirect:/item/";
 
     }
