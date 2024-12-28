@@ -38,6 +38,7 @@ public class SecurityConfig {
     private LogoutHandler logoutHandler() {
         return (request, response, authentication) -> {
             try {
+                // TODO: Hardcoded variable
                 String returnTo = "http://localhost:3000/item/";
                 String logoutUrl = issuer + "v2/logout?client_id=" + clientId + "&returnTo=" + returnTo;
                 response.sendRedirect(logoutUrl);
